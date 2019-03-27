@@ -76,20 +76,27 @@ class MyFrame(wx.Frame):
         self.__statictext2 = statictext2
 
     def OnCb1Clicked(self, event):
+        # print下拉菜单1选择结果
         print("\r\n" + "考试级别选择:{}".format(event.GetString()))
+        # 从choose_dict中获取键名为currentclass的键值
         currentclass = event.GetString()
         value = choose_dict.__getitem__(currentclass)
         print(value)
+        # 将获取的键值作为下拉菜单2的选项
         self.__cb2.SetItems(list(value))
 
     def OnCb2Clicked(self, event):
+        # 获取下拉菜单2选择值的id
         currentindex = self.__cb2.GetSelection()
+        # 根据id找到下拉菜单2的选择值
         currentsubject = self.__cb2.GetItems()[currentindex]
         print("\r\n" + "考试科目选择:{}".format(currentsubject))
+        # 下拉菜单2的选择值为acyivation_dict的键名，根据键名找到键值
         for i in activationcode_dice.keys():
             if currentsubject == i:
                 subject = activationcode_dice.__getitem__(i)
                 print(subject)
+                # 用random.chioce函数从键值中随机选择一个作为激活码显示
                 self.__statictext2.SetLabel(choice(subject))
 
 
