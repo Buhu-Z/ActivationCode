@@ -1,0 +1,18 @@
+一.文件夹：
+1. Include、Lib、Scripts、tcl：为创建虚拟环境生成文件夹，保存此虚拟环境内置文件
+2. .idea：编译产生
+
+二.文件：
+1.Activation_code.py：项目实现
+
+三.安装库：
+1.自带：pip、setuptools、wheel
+2.安装第三方库：six, Pillow, wxpython
+
+四.所需库
+1.自带库：
+a.random[具体使用：choice]
+
+2.第三方库：
+a.wxpython（pip install wxpython ；最终安装：six, Pillow, wxpython）[具体使用：wx]
+
