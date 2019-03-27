@@ -24,7 +24,7 @@ activationcode_dice = {
 
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title="激活码生成器", size=(400, 200))
+        super().__init__(parent=None, title="激活码生成器", size=(400, 240))
         self.Center()  # 设置窗口居中
         # 放一个面板，用于布局其他控件
         panel = wx.Panel(parent=self)
@@ -58,11 +58,18 @@ class MyFrame(wx.Frame):
         codebox.Add(statictext1, 1, flag=wx.LEFT | wx.RIGHT | wx.FIXED_MINSIZE, border=5)
         codebox.Add(statictext2, 1, flag=wx.LEFT | wx.RIGHT | wx.FIXED_MINSIZE, border=5)
 
+        # 生成TXT文本button 初始化
+        txtbox = wx.BoxSizer(wx.HORIZONTAL)
+        button = wx.Button(panel, label='生成txt文本')
+        button.Center()
+        txtbox.Add(button, 1, flag=wx.CENTER, border=5)
+
         # 将考试级别、考试科目、激活码 控件添加进 vbox
         vbox = wx.BoxSizer(wx.VERTICAL)
         vbox.Add(classbox, 1, flag=wx.ALL | wx.EXPAND, border=5)
         vbox.Add(subjectbox, 1, flag=wx.ALL | wx.EXPAND, border=5)
         vbox.Add(codebox, 1, flag=wx.ALL | wx.EXPAND, border=5)
+        vbox.Add(txtbox, 1, flag=wx.ALL | wx.EXPAND, border=5)
 
         # 将vbox控件添加到panel
         panel.SetSizer(vbox)
@@ -70,10 +77,35 @@ class MyFrame(wx.Frame):
         # 添加事件处理
         self.Bind(wx.EVT_COMBOBOX, self.OnCb1Clicked, cb1)
         self.Bind(wx.EVT_COMBOBOX, self.OnCb2Clicked, cb2)
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClicked, button)
 
         # 成功的关键，对就是这个，解决了问题（在一个函数中用另一个函数的值，就这样弄）
         self.__cb2 = cb2
         self.__statictext2 = statictext2
+
+    # 生成txt文本 点击时间响应
+    def OnButtonClicked(self, event):
+        #创建弹窗，询问用户生成文件的名字，默认为计算机等级考试，若用户点取消或者右上角x都不会生成txt文本
+        file_dlg = wx.TextEntryDialog(None, "请输入生成文本名：", "提示", "计算机等级考试")
+        if file_dlg.ShowModal() == wx.ID_OK:
+            response = file_dlg.GetValue()
+        else:
+            file_dlg.Destroy()
+            #如果点取消，会继续往下执行，但因没有response值代码会报错，但不影响使用，不会生成文本
+
+        # 新建文本并按指定格式往里面写数据
+        file = open(response + '.txt', 'w', encoding='utf-8')
+        one = "计算机 " + self.__currentclass + "" + self.__currentsubject + " 考试"
+        two = "\r\n" + "激活码：" + self.__activationcode
+        three = "\r\n" + "下载链接：" + ""
+        four = "\r\n" + "注意事项:" + "\r\n" + "1.点击链接下载对应软件（电脑操作）" + "\r\n" + "2.使用管理员权限安装模拟软件（关闭杀毒软件）" + "\r\n" + "3.激活软件-输入激活码"
+        file.write('\n'.join([one, two, three, four]))
+        file.close()
+        # 设置弹窗提示文本生成成功
+        Mess_dlg = wx.MessageDialog(None, "生成TXT文本成功！", "提示", style=wx.OK)
+        Mess_dlg.ShowModal()
+        Mess_dlg.Destroy()
+        print("生成文本成功")
 
     def OnCb1Clicked(self, event):
         # print下拉菜单1选择结果
@@ -84,12 +116,17 @@ class MyFrame(wx.Frame):
         print(value)
         # 将获取的键值作为下拉菜单2的选项
         self.__cb2.SetItems(list(value))
+        # 方便生成txt调用
+        self.__currentclass = currentclass
 
     def OnCb2Clicked(self, event):
         # 获取下拉菜单2选择值的id
         currentindex = self.__cb2.GetSelection()
         # 根据id找到下拉菜单2的选择值
         currentsubject = self.__cb2.GetItems()[currentindex]
+        # 方便生成txt调用
+        self.__currentsubject = currentsubject
+
         print("\r\n" + "考试科目选择:{}".format(currentsubject))
         # 下拉菜单2的选择值为acyivation_dict的键名，根据键名找到键值
         for i in activationcode_dice.keys():
@@ -97,7 +134,10 @@ class MyFrame(wx.Frame):
                 subject = activationcode_dice.__getitem__(i)
                 print(subject)
                 # 用random.chioce函数从键值中随机选择一个作为激活码显示
-                self.__statictext2.SetLabel(choice(subject))
+                activationcode = choice(subject)
+                self.__statictext2.SetLabel(activationcode)
+                # 方便生成txt调用
+                self.__activationcode = activationcode
 
 
 # 自定以一个应用程序类
