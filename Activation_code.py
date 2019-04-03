@@ -85,19 +85,19 @@ class MyFrame(wx.Frame):
 
     # 生成txt文本 点击时间响应
     def OnButtonClicked(self, event):
-        #创建弹窗，询问用户生成文件的名字，默认为计算机等级考试，若用户点取消或者右上角x都不会生成txt文本
+        # 创建弹窗，询问用户生成文件的名字，默认为计算机等级考试，若用户点取消或者右上角x都不会生成txt文本
         file_dlg = wx.TextEntryDialog(None, "请输入生成文本名：", "提示", "计算机等级考试")
         if file_dlg.ShowModal() == wx.ID_OK:
             response = file_dlg.GetValue()
         else:
             file_dlg.Destroy()
-            #如果点取消，会继续往下执行，但因没有response值代码会报错，但不影响使用，不会生成文本
+            # 如果点取消，会继续往下执行，但因没有response值代码会报错，但不影响使用，不会生成文本
 
         # 新建文本并按指定格式往里面写数据
         file = open(response + '.txt', 'w', encoding='utf-8')
         one = "计算机 " + self.__currentclass + "" + self.__currentsubject + " 考试"
         two = "\r\n" + "激活码：" + self.__activationcode
-        three = "\r\n" + "下载链接：" + ""
+        three = "\r\n" + "下载链接：" + "https://pan.baidu.com/s/1vzw6ZVjPGWdr7ud4VyR0Zw 提取码: 28vr"
         four = "\r\n" + "注意事项:" + "\r\n" + "1.点击链接下载对应软件（电脑操作）" + "\r\n" + "2.使用管理员权限安装模拟软件（关闭杀毒软件）" + "\r\n" + "3.激活软件-输入激活码"
         file.write('\n'.join([one, two, three, four]))
         file.close()
@@ -107,6 +107,7 @@ class MyFrame(wx.Frame):
         Mess_dlg.Destroy()
         print("生成文本成功")
 
+    # 考试级别 下拉菜单 点击事件
     def OnCb1Clicked(self, event):
         # print下拉菜单1选择结果
         print("\r\n" + "考试级别选择:{}".format(event.GetString()))
@@ -119,6 +120,7 @@ class MyFrame(wx.Frame):
         # 方便生成txt调用
         self.__currentclass = currentclass
 
+    # 考试科目下拉菜单点击事件
     def OnCb2Clicked(self, event):
         # 获取下拉菜单2选择值的id
         currentindex = self.__cb2.GetSelection()

@@ -1,13 +1,17 @@
 一.文件夹：
-1. Include、Lib、Scripts、tcl：为创建虚拟环境生成文件夹，保存此虚拟环境内置文件
-2. .idea：编译产生
+1. Include、Lib、Scripts、tcl：为创建虚拟环境生成文件夹，保存此虚拟环境内置文件；
+2. .idea、__pycache__：编译产生；
+3.build、dist：dist：生成exe保存文件夹（插嘴：文件夹下的exe文件可以直接用）；build：生成exe文件运行的中间文件，里面有个warn文件详细记录了打包的错误；
 
 二.文件：
 1.Activation_code.py：项目实现
+2.功能说明.docx：功能说明文档；
+3.文件说明.txt：文件说明
+4.Activation_code.spec：生成exe过程中产生；
 
 三.安装库：
 1.自带：pip、setuptools、wheel
-2.安装第三方库：six, Pillow, wxpython
+2.安装第三方库：six, Pillow, wxpython；pywin32-ctypes, future, pefile, altgraph, macholib, PyInstaller
 
 四.所需库
 1.自带库：
@@ -15,4 +19,5 @@ a.random[具体使用：choice]
 
 2.第三方库：
 a.wxpython（pip install wxpython ；最终安装：six, Pillow, wxpython）[具体使用：wx]
+b.PyInstaller(pip install PyInstaller ；最终安装：pywin32-ctypes, future, pefile, altgraph, macholib, PyInstaller)[具体使用（命令行生成exe）：pyinstaller -F ...]
 
